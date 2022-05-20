@@ -7,8 +7,8 @@ module.exports = function (passport){
   
 
 passport.use(new localStrategy(
-  function(username, password, cb){
-    knex("Users")
+  function(username, password, done){
+    knex("users")
     .whereRaw(
       `email = ?, [${username}]`
     ).then((user)=>{
