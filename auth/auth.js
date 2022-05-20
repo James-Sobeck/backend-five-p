@@ -31,6 +31,7 @@ passport.use(new localStrategy(
       .whereRaw(
         `email = ?, ${username}`
       ).then((user)=>{
+        console.log("FOUND")
         if(!user) {return cs(null, false)}
         const isValid = validPassword(password, user.hash, user.salt);
         if(isValid){
