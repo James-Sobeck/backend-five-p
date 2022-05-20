@@ -24,7 +24,12 @@ module.exports = {
   },
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL,
+    connection: {
+      host: process.env.POSTGRES_HOST,
+      port: process.env.POSTGRES_PORT,
+      user: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PW,
+    },
     migrations: {
       directory: path.join(__dirname, "src", "db", "migrations"),
     },
