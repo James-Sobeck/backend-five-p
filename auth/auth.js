@@ -2,9 +2,11 @@ const passport = require('passport');
 const express = require('express');
 const session = require('express-sessions');
 const knex = require('../src/db/connection');
-const LocalStrategy = require('passport-local').Strategy;
+const localStrategy = require('passport-local').Strategy;
+module.exports = function (passport){
+  
 
-passport.use(new LocalStrategy(
+passport.use(new localStrategy(
   function(username, password, cb){
     knex("Users")
     .whereRaw(
@@ -35,7 +37,7 @@ passport.deserializeUser((userId, done) => {
       })
       .catch(err => done(err))
 });
-
+}
 // const LocalStrategy = require('passport-local').Strategy;
 // const JwtStrategy = require('passport-jwt').Strategy;
 

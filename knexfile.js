@@ -12,8 +12,9 @@ module.exports = {
 
   development: {
     client: "postgresql",
-    pool: { min: 1, max: 5 },
-    connection: DATABASE_URL,
+    connection: {
+      connectionString: DATABASE_URL,
+    },
     migrations: {
       directory: path.join(__dirname, "src", "db", "migrations"),
     },
@@ -21,5 +22,14 @@ module.exports = {
       directory: path.join(__dirname, "src", "db", "seeds"),
     }
   },
-
+  production: {
+    client: 'pg',
+    connection: process.env.DATABASE_URL,
+    migrations: {
+      directory: path.join(__dirname, "src", "db", "migrations"),
+    },
+    seeds: {
+      directory: path.join(__dirname, "src", "db", "seeds"),
+    }
+}
 };
