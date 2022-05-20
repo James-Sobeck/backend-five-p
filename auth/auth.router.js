@@ -4,15 +4,18 @@ const router = require("express").Router();
 
 const knex = require('../src/db/connection');
 const genPassword = require("./passwordUtils").genPassword;
+const passportLocal = require("passport-local").Strategy;
+require("./auth")(passport);
 //, { failureRedirect: '/login', successRedirect: '/module1' }
-router.post('/login', passport.authenticate('local', { failureRedirect: '/login' }),
+router.post('/login', passport.authenticate('local', { successRedirect: '/suc', failureRedirect: '/loin' }),
 function(req, res) {
-  res.redirect('/');
+  console.log("pass hit");
+  res.status(201).json({ data: "temp" });
 });
 
 
 router.post('/register', (req, res, next) => {
-  console.log("router hit");
+  //console.log("router hit");
   //console.log(req.body.data.password)
   const saltHash = genPassword(req.body.data.password);
   const salt = saltHash.salt;
@@ -60,6 +63,7 @@ router.post('/register', (req, res, next) => {
     //const newObj = Object.assign(tempUser, tempProp);
     const { user_id } = await create(newUser);
     newUser.user_id = user_id;
+    //console.log(newUser);
     res.status(201).json({ data: newUser });
   }
   
