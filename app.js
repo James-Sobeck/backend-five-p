@@ -12,8 +12,9 @@ const notFound = require("./errors/notFound");
 const pgSession = require('connect-pg-simple')(expressSession);
 const app = express();
 var routes = require('./auth/auth.router');
+const bodyParser = require("body-parser");
 
-
+const knex = require('./src/db/connection');
 // const passport = require('passport');
 
 const pgPool = new pg.Pool({
@@ -23,8 +24,9 @@ const pgPool = new pg.Pool({
 
 
 app.use(cors());
-app.use(express.json());
-
+// app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressSession({
    store: new pgSession({
        createTableIfMissing: true,
@@ -41,8 +43,36 @@ app.use(expressSession({
 
 app.use(passport.initialize());
 app.use(passport.session());
-require('./auth/auth');
+// require('./auth/auth');
+require("./auth/passportConfig")(passport);
 app.use(routes);
+
+
+
+// app.post('/login', function(req,res,next){
+//    console.log("reached auth enpoint");
+//    console.log(req.body);
+//    let email = req.body.email
+//    knex("users")
+//    .select("*")
+//    .whereRaw('email like ?',`${email}`).then((res)=> console.log(res))
+//    var auth = passport.authenticate('local', function(err, user, info){
+//       console.log("Test:" + user);
+//       if(err){return next(err);}
+//       console.log(req.user);
+//       //   // make sure to respond to the request
+//       res.send(req.user);
+//          //  if(!user){res.send({success:false});}
+
+//          //  req.logIn(user, function(err){
+
+//          //      if(err){return next(err);}
+
+//          //      res.send({success: true, user: user});
+//          //  });
+//    })
+//    auth(req, res, next);
+// })
 
 
 app.use(notFound);

@@ -25,37 +25,91 @@ module.exports = function (passport){
 //     })
 //   }
 // ));
-passport.use(new localStrategy(
-    function(username, password, done){
-      return knex("users")
-      .whereRaw(
-        `email = ?, ${username}`
-      ).then((user)=>{
-        console.log("FOUND")
-        if(!user) {return cs(null, false)}
-        const isValid = validPassword(password, user.hash, user.salt);
-        if(isValid){
-          return done(null, user);
-        } else{
-          return done(null, false);
-        }
-      })
-      .catch((err)=>{
-        done(err);
-      })
-    }
-  ));
 
+// passport.use("local", new localStrategy(
+//     function(username, password, done){
+//       let email = username;
+//      console.log("fuj")
+//       return knex("users")
+//       .select("*").where({email}).then((user)=>{
+//         if(!user) {return cs(null, false)}
+//         const isValid = validPassword(password, user.hash, user.salt);
+//         if(isValid){
+//           return done(null, user);
+//         } else{
+//           return done(null, false);
+//         }
+//       })
+//       .catch((err)=>{
+//         done(err);
+//       })
+//     }
+//   ));
+  
+passport.use(new localStrategy({
+  username: 'email',
+  password: 'password'
+},
+  async function(username, password, done){
+    console.log("local called");
+    let email = username;
+         console.log("fuj")
+          return awaitknex("users").select('*')
+          .where('email', email).then((user)=>{
+            if(!user) {return cs(null, false)}
+            const isValid = validPassword(password, user.hash, user.salt);
+            console.log(isValid)
+            if(isValid){
+              return done(null, user);
+            } else{
+              return done(null, false);
+            }
+          })
+          .catch((err)=>{
+            done(err);
+          })
+        
+  }))
+  const passportLocal = passport.use(new localStrategy({
+    username: 'username',
+    password: 'password'
+  },
+    async function(username, password, done){
+      
+      let email = username;
+            return await knex("users")
+           .where("email", email).then((user)=>{
+              if(!user) {return cs(null, false)}
+              const isValid = validPassword(password, user.hash, user.salt);
+              console.log(isValid)
+              if(isValid){
+                return done(null, user);
+              } else{
+                return done(null, false);
+              }
+            })
+            .catch((err)=>{
+              done(err);
+            })
+          
+    }))
+    passport.use('local', passportLocal);
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  log.debug("serialize ", user);
+    done(null, user.email);
 });
 
-passport.deserializeUser((userId, done) => {
-  User.findById(userId)
-      .then((user) => {
-          done(null, user);
-      })
-      .catch(err => done(err))
+passport.deserializeUser((email, done)=>{
+  log.debug("deserualize ", email);
+  return knex("users")
+  .where("email", email)
+  .then((user)=>{
+    //log.debug("deserializeUser ", user);
+    done(null, user);
+  })
+  .catch((err)=>{
+    done(new Error(`User with the id ${email} does not exist`));
+  })
 });
 }
 // const LocalStrategy = require('passport-local').Strategy;
