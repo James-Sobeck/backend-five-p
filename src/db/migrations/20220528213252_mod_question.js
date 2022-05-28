@@ -7,7 +7,8 @@
         table.increments("mod_question_id").primary();
         table.text("question_answer_pre");
         table.text("question_answer_post");
-        table.integer("module_id").references("module_id").inTable("modules");
+        table.integer("module_id");
+        table.foreign("module_id").references("module_id").inTable("modules");
         table.dateTime("finished_at");
     })
   };
