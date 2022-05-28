@@ -12,7 +12,7 @@ exports.up = function(knex) {
       table.string("city");
       table.string("state");
       table.string("zip");
-      table.integer("phone_number");
+      table.string("phone_number");
       table.dateTime("created_at");
   })
 };

@@ -3,9 +3,9 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-  return knex.schema.alterTable("orgranizations", (table)=>{
-      table.string("org_type").notNullable()
-  })
+  // return knex.schema.alterTable("orgranizations", (table)=>{
+  //     table.string("org_type").notNullable()
+  // })
 };
 
 /**
@@ -13,7 +13,7 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.alterTable("orgranizations", (table)=>{
-      table.dropColumn("org_type");
-  })
+  // return knex.schema.alterTable("orgranizations", (table)=>{
+  //     table.dropColumn("org_type");
+  // })
 };
