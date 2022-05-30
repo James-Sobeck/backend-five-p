@@ -14,6 +14,7 @@ exports.up = function(knex) {
       table.string("zip");
       table.string("phone_number");
       table.dateTime("created_at");
+      table.string("type");
   })
 };
 
