@@ -1,7 +1,7 @@
 const knex = require("../src/db/connection")
 
 function create(organization){
-    return knex("organizations")
+    return knex("organization")
     .insert(organization)
     .returning("*")
     .then((newOrg)=> newOrg[0])
