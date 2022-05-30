@@ -18,7 +18,7 @@ exports.up = function (knex) {
     table.foreign("organization_id").references("organization_id").inTable("orgranizations");
     table.string("hash");
     table.string("salt");
-    table.integer("module_id").references("module_id").inTable("modules");
+    // table.integer("module_id").references("module_id").inTable("modules");
   });
 };
 
