@@ -16,8 +16,8 @@ async function create(req, res){
         created_at: organization.created_at,
         type: organization.type,
     }
-    //const {organization_id} = await service.create(organization);
-    //organization.organization_id = organization_id;
+    const {organization_id} = await service.create(organization);
+    organization.organization_id = organization_id;
     res.status(201).json({data: tempOrg});
 }
 
