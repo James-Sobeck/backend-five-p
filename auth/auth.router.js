@@ -98,8 +98,6 @@ router.post('/register', (req, res, next) => {
       zip: req.body.data.zip,
       phone_number: req.body.data.phone_number,
       organization_id: req.body.data.organization_id,
-      module_id_complete: req.body.data.module_id_complete,
-      module_id_todo: req.body.data.module_id_todo,
       hash: hash,
       salt: salt,
   };

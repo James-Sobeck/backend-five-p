@@ -2,7 +2,6 @@ const { type } = require("express/lib/response");
 const service = require("./organization.service");
 
 async function create(req, res){
-    console.log(req.body.data);
     const organization = req.body.data;
     let tempOrg = {
         name: organization.name,
