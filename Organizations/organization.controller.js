@@ -1,9 +1,10 @@
 const service = require("./organization.service");
 
 async function create(req, res){
+    console.log(req.body.data);
     const organization = req.body.data;
-    const {organization_id} = await service.create(organization);
-    organization.organization_id = organization_id;
+    //const {organization_id} = await service.create(organization);
+    //organization.organization_id = organization_id;
     res.status(201).json({data: organization});
 }
 
