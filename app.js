@@ -13,6 +13,7 @@ const pgSession = require('connect-pg-simple')(expressSession);
 const app = express();
 var routes = require('./auth/auth.router');
 const bodyParser = require("body-parser");
+const organizationRouter = require("./Organizations/organization.router");
 
 const knex = require('./src/db/connection');
 // const passport = require('passport');
@@ -46,8 +47,7 @@ app.use(passport.session());
 // require('./auth/auth');
 require("./auth/passportConfig")(passport);
 app.use(routes);
-
-
+app.use("/org", organizationRouter)
 
 // app.post('/login', function(req,res,next){
 //    console.log("reached auth enpoint");
