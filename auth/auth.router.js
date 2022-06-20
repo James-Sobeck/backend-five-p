@@ -51,6 +51,44 @@ router.post('/login', function(req,res,next){
    
    
 })
+
+router.post('/reset', (req, res, next)=>{
+  const saltHash = genPassword(req.body.password);
+  const salt = saltHash.salt;
+  const hash = saltHash.hash;
+  const newUser = {
+    user_id: req.body.data.user_id,
+    email: req.body.data.email,
+    first_name: req.body.data.first_name,
+    last_name: req.body.data.last_name,
+    address_1: req.body.data.address_1,
+    address_2: req.body.data.address_2,
+    city: req.body.data.city,
+    state: req.body.data.state,
+    zip: req.body.data.zip,
+    phone_number: req.body.data.phone_number,
+    organization_id: req.body.data.organization_id,
+    hash: hash,
+    salt: salt,
+};
+
+  function update(user_id, user){
+    return knex("users")
+    .select("*")
+    .where({user_id})
+    .update(user, "*")
+    .returning("*")
+    .then((newU) => newU[0])
+  }
+  
+  async function conUpdate(){
+    const userU = await update(newUser.user_id, newUser);
+    console.log(userU);
+    res.status(201).json({data: userU})
+  }
+  
+  conUpdate();
+})
 // router.post('/login', (req, res, next)=>{
 //   passport.authenticate("local", (err, user, info)=>{
 //     console.log("GHEOPKFOF")

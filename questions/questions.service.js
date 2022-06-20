@@ -6,3 +6,7 @@ function questionSave(question){
     .returning("*")
     .then((savedQuestion)=> savedQuestion[0])
 }
+
+module.export = {
+    questionSave
+}
